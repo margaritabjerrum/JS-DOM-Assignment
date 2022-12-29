@@ -53,6 +53,26 @@ const ApiService = {
     } catch (error) {
       throw formatError(error);
     }
+  },
+
+  async updatePost({ id, props }) {
+    try {
+      const response = await fetch(`${SERVER_ADDRESS}/${POSTS_COLLECTION_NAME}/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(props),
+      });
+
+      if (response.status === 404) {
+        throw new Error(`Failed to update Message`)
+      }
+
+    } catch (error) {
+      throw formatError(error);
+    }
   }
 };
 

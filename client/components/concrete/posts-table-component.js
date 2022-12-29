@@ -2,9 +2,10 @@ class PostsTableComponent {
   htmlElement;
   tbodyHtmlElement;
 
-  onDeleonDeletePostteTodo;
+  onDeletePost;
+  onUpdatePost
 
-  constructor({ posts, onDeletePost }) {
+  constructor({ posts, onDeletePost, onUpdatePost }) {
     this.htmlElement = document.createElement('table');
     this.htmlElement.className = 'table table-borderless';
     this.htmlElement.innerHTML = `
@@ -17,14 +18,51 @@ class PostsTableComponent {
       </thead>
       <tbody></tbody>`;
     this.onDeletePost = onDeletePost;
+    this.onUpdatePost = onUpdatePost;
     this.tbodyHtmlElement = this.htmlElement.querySelector('tbody');
     this.renderPosts(posts);
   }
 
-  enableRowEditAction = ({ initialState, id, tr }) => {
+  enableRowEditAction = ({ tr, editButton, cancelEditing, enableEditing, isBeingEdited }) => {
+    document.addEventListener('click', (event) => {
+      event.stopPropagation();
+      if (!tr.contains(event.target)) cancelEditing();
+    });
+
+    editButton.addEventListener('click', () => {
+      if (isBeingEdited) cancelEditing();
+      else enableEditing();
+    });
+  }
+
+  enableRowDeleteAction = ({ initialState, id, delButton }) => {
+    delButton.addEventListener('click', () => this.onDeletePost({ post: initialState.post, id }));
+  }
+
+  enableRowUpdateAction = ({ id, postColumn, udpateButton, initialState, cancelEditing }) => {
+    udpateButton.addEventListener('click', () => {
+      const props = {
+        id,
+        post: postColumn.textContent,
+      };
+
+      if (initialState.post !== props.post) {
+        this.onUpdatePost({ id, props });
+      } else {
+        cancelEditing();
+      }
+
+    });
+  }
+
+  enableRowActions = ({tr, post, id }) => {
     let isBeingEdited = false;
+    const editButton = tr.querySelector('.btn-warning');
     const postColumn = tr.querySelector('.js-post-col');
     const udpateButton = tr.querySelector('.btn-success');
+    const delButton = tr.querySelector('.btn-danger');
+    const initialState = { post };
+
 
     const cancelEditing = () => {
       tr.classList.remove('table-secondary');
@@ -34,7 +72,7 @@ class PostsTableComponent {
       udpateButton.classList.add('d-none');
       postColumn.textContent = initialState.post;
       isBeingEdited = false;
-    }
+    };
 
     const enableEditing = () => {
       tr.classList.add('table-secondary');
@@ -43,24 +81,24 @@ class PostsTableComponent {
       postColumn.setAttribute('contenteditable', 'true');
       udpateButton.classList.remove('d-none');
       isBeingEdited = true;
-    }
+    };
 
-    document.addEventListener('click', (event) => {
-      event.stopPropagation();
-      if (!tr.contains(event.target)) cancelEditing();
-    });
+    const actionProps = {
+      id,
+      tr,
+      initialState,
+      isBeingEdited,
+      postColumn,
+      udpateButton,
+      editButton,
+      delButton,
+      cancelEditing,
+      enableEditing,
+    };
 
-    const editButton = tr.querySelector('.btn-warning');
-    editButton.addEventListener('click', () => {
-      if (isBeingEdited) cancelEditing();
-      else enableEditing();
-    });
-
-  }
-
-  enableRowDeleteAction = ({ initialState, id, tr }) => {
-    const delButton = tr.querySelector('.btn-danger');
-    delButton.addEventListener('click', () => this.onDeletePost({ post: initialState.post, id }));
+    this.enableRowDeleteAction(actionProps);
+    this.enableRowEditAction(actionProps);
+    this.enableRowUpdateAction(actionProps);
   }
 
   createRowHtmlElement = ({ post, id }) => {
@@ -74,9 +112,7 @@ class PostsTableComponent {
       <button class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></button>
     </td>`;
 
-    const actionProps = { id, tr, initialState: { post } }
-    this.enableRowDeleteAction(actionProps);
-    this.enableRowEditAction(actionProps);
+    this.enableRowActions({tr, post, id });
 
     return tr;
   }

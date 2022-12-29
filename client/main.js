@@ -34,9 +34,20 @@ const onCreatePost = async ({ post }) => {
   }
 }
 
+const onUpdatePost = async ({ id, props }) => {
+  try {
+    await ApiService.updatePost({ id, props });
+  } catch (error) {
+    alert(error);
+  } finally {
+    const posts = await ApiService.getPosts();
+    postsTableComponent.renderPosts(posts);
+  }
+}
+
 ApiService.getPosts()
   .then((posts) => {
-    postsTableComponent = new PostsTableComponent({ posts, onDeletePost });
+    postsTableComponent = new PostsTableComponent({ posts, onDeletePost, onUpdatePost });
     postsFormComponent = new PostsFormComponent({ onSubmit: onCreatePost });
     const headerComponent = new HeaderComponent({
       text: 'Simple Message Board',
