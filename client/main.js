@@ -37,14 +37,14 @@ ApiService.getPosts()
       postsFormComponent.htmlElement,
       postsTableComponent.htmlElement,
     ]
-  })
+  });
 
   const container = new ContainerComponent({
     children: [
       headerComponent.htmlElement,
       flexComponent.htmlElement,
     ]
-  })
+  });
   
     rootHtmlElement.append(container.htmlElement);      
   })
