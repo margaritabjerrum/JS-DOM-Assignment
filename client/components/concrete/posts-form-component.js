@@ -1,7 +1,7 @@
 class PostsFormComponent {
   htmlElement;
 
-  constructor() {
+  constructor({ onSubmit }) {
     this.htmlElement = document.createElement('form');
     this.htmlElement.innerHTML = `
       <div class="mb-3">
@@ -10,14 +10,16 @@ class PostsFormComponent {
       </div>
       <button type="submit" class="btn btn-primary">Post</button>`
 
-      this.htmlElement.addEventListener('submit', async (event) => {
-        event.preventDefault();
+    this.htmlElement.addEventListener('submit', async (event) => {
+      event.preventDefault();
 
-        const formData = new FormData(event.target);
-        const message = formData.get('posts');
+      const formData = new FormData(event.target);
+      const post = formData.get('posts');
 
-        console.log(`i wrote new message: ${message}`);
-      })
+      console.log(`i wrote new message: ${post}`);
+      onSubmit({ post });
+      event.target.reset();
+    })
 
   }
 

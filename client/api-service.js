@@ -34,6 +34,26 @@ const ApiService = {
       throw formatError(error);
     }
   },
+
+  async createPost(postData) {
+    try {
+      const response = await fetch(`${SERVER_ADDRESS}/${POSTS_COLLECTION_NAME}`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(postData),
+      });
+
+      if (response.status === 404) {
+        throw new Error(`Failed to Create new Message`)
+      }
+
+    } catch (error) {
+      throw formatError(error);
+    }
+  }
 };
 
 export default ApiService;

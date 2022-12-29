@@ -23,30 +23,41 @@ const onDeletePost = async ({ post, id }) => {
   }
 }
 
+const onCreatePost = async ({ post }) => {
+  try {
+    await ApiService.createPost({ post });
+  } catch (error) {
+    alert(error);
+  } finally {
+    const posts = await ApiService.getPosts();
+    postsTableComponent.renderPosts(posts);
+  }
+}
+
 ApiService.getPosts()
-.then((posts) => {
-  postsTableComponent = new PostsTableComponent({ posts, onDeletePost });
-  postsFormComponent = new PostsFormComponent();
-  const headerComponent = new HeaderComponent({
-    text: 'Simple Message Board',
-    className: 'text-center my-4 fw-normal'
-  });
+  .then((posts) => {
+    postsTableComponent = new PostsTableComponent({ posts, onDeletePost });
+    postsFormComponent = new PostsFormComponent({ onSubmit: onCreatePost });
+    const headerComponent = new HeaderComponent({
+      text: 'Simple Message Board',
+      className: 'text-center my-4 fw-normal'
+    });
 
-  const flexComponent = new FlexComponent({
-    children: [
-      postsFormComponent.htmlElement,
-      postsTableComponent.htmlElement,
-    ]
-  });
+    const flexComponent = new FlexComponent({
+      children: [
+        postsFormComponent.htmlElement,
+        postsTableComponent.htmlElement,
+      ]
+    });
 
-  const container = new ContainerComponent({
-    children: [
-      headerComponent.htmlElement,
-      flexComponent.htmlElement,
-    ]
-  });
-  
-    rootHtmlElement.append(container.htmlElement);      
+    const container = new ContainerComponent({
+      children: [
+        headerComponent.htmlElement,
+        flexComponent.htmlElement,
+      ]
+    });
+
+    rootHtmlElement.append(container.htmlElement);
   })
   .catch((err) => {
     console.error(err);
