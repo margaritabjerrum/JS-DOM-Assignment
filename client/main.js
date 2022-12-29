@@ -1,13 +1,26 @@
+import ApiService from './api-service.js';
 import PostsFormComponent from './components/concrete/posts-form-component.js';
 import PostsTableComponent from './components/concrete/posts-table-component.js';
 
 const rootHtmlElement = document.querySelector('#root');
 
-const postsFormComponent = new PostsFormComponent();
+if (rootHtmlElement === null) throw new Error('Error: #root element  was not found in HTML file.');
 
-const postsTableComponent = new PostsTableComponent();
+let postsFormComponent;
+let postsTableComponent;
 
-rootHtmlElement.append(
-  postsFormComponent.htmlElement,
-  postsTableComponent.htmlElement
-  );
+
+
+ApiService.getPosts()
+.then((posts) => {
+  postsTableComponent = new PostsTableComponent({ posts });
+  postsFormComponent = new PostsFormComponent();
+  
+    rootHtmlElement.append(
+      postsTableComponent.htmlElement,
+      postsFormComponent.htmlElement
+    );      
+  })
+  .catch((err) => {
+    console.error(err);
+  });
