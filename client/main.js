@@ -1,5 +1,6 @@
 import ApiService from './api-service.js';
 import HeaderComponent from './components/concrete/header-component.js';
+import ContainerComponent from './components/wrappers/container-component.js'
 import PostsFormComponent from './components/concrete/posts-form-component.js';
 import PostsTableComponent from './components/concrete/posts-table-component.js';
 
@@ -28,13 +29,17 @@ ApiService.getPosts()
   const headerComponent = new HeaderComponent({
     text: 'Simple Message Board',
     className: 'text-center my-4 fw-normal'
-  })
-  
-    rootHtmlElement.append(
+  });
+
+  const container = new ContainerComponent({
+    children: [
       headerComponent.htmlElement,
       postsTableComponent.htmlElement,
       postsFormComponent.htmlElement
-    );      
+    ]
+  })
+  
+    rootHtmlElement.append(container.htmlElement);      
   })
   .catch((err) => {
     console.error(err);
