@@ -1,8 +1,9 @@
 import ApiService from './api-service.js';
-import HeaderComponent from './components/concrete/header-component.js';
-import ContainerComponent from './components/wrappers/container-component.js'
 import PostsFormComponent from './components/concrete/posts-form-component.js';
 import PostsTableComponent from './components/concrete/posts-table-component.js';
+import HeaderComponent from './components/concrete/header-component.js';
+import ContainerComponent from './components/wrappers/container-component.js';
+import FlexComponent from './components/wrappers/flex-component.js'
 
 const rootHtmlElement = document.querySelector('#root');
 
@@ -31,11 +32,17 @@ ApiService.getPosts()
     className: 'text-center my-4 fw-normal'
   });
 
+  const flexComponent = new FlexComponent({
+    children: [
+      postsFormComponent.htmlElement,
+      postsTableComponent.htmlElement,
+    ]
+  })
+
   const container = new ContainerComponent({
     children: [
       headerComponent.htmlElement,
-      postsTableComponent.htmlElement,
-      postsFormComponent.htmlElement
+      flexComponent.htmlElement,
     ]
   })
   
