@@ -26,12 +26,18 @@ class PostsTableComponent {
     tr.innerHTML = `
       <td>${id}</td>
       <td>${post}</td>
-      <td class="d-flex justify-content-end">
+      <td class="d-flex justify-content-end gap-2">
+      <button class="btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></i></button>
       <button class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></button>
     </td>`;
 
     const delButton = tr.querySelector('.btn-danger');
     delButton.addEventListener('click', () => this.onDeletePost({ post, id }));
+
+    const updateButton = tr.querySelector('.btn-warning');
+    updateButton.addEventListener('click', () => {
+      console.log({id});
+    });
 
     return tr;
   }
