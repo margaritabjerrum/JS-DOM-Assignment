@@ -1,4 +1,5 @@
 import ApiService from './api-service.js';
+import HeaderComponent from './components/concrete/header-component.js';
 import PostsFormComponent from './components/concrete/posts-form-component.js';
 import PostsTableComponent from './components/concrete/posts-table-component.js';
 
@@ -24,8 +25,13 @@ ApiService.getPosts()
 .then((posts) => {
   postsTableComponent = new PostsTableComponent({ posts, onDeletePost });
   postsFormComponent = new PostsFormComponent();
+  const headerComponent = new HeaderComponent({
+    text: 'Simple Message Board',
+    className: 'text-center my-4 fw-normal'
+  })
   
     rootHtmlElement.append(
+      headerComponent.htmlElement,
       postsTableComponent.htmlElement,
       postsFormComponent.htmlElement
     );      
