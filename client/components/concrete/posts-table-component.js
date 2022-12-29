@@ -2,7 +2,9 @@ class PostsTableComponent {
   htmlElement;
   tbodyHtmlElement;
 
-  constructor({ posts }) {
+  onDeleonDeletePostteTodo;
+
+  constructor({ posts, onDeletePost }) {
     this.htmlElement = document.createElement('table');
     this.htmlElement.className = 'table table-borderless';
     this.htmlElement.innerHTML = `
@@ -14,6 +16,7 @@ class PostsTableComponent {
         </tr>
       </thead>
       <tbody></tbody>`;
+    this.onDeletePost = onDeletePost;
     this.tbodyHtmlElement = this.htmlElement.querySelector('tbody');
     this.renderPosts(posts);
   }
@@ -23,8 +26,12 @@ class PostsTableComponent {
     tr.innerHTML = `
       <td>${id}</td>
       <td>${post}</td>
-      <td>action</td>
-    `;
+      <td class="d-flex justify-content-end">
+      <button class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></button>
+    </td>`;
+
+    const delButton = tr.querySelector('.btn-danger');
+    delButton.addEventListener('click', () => this.onDeletePost({ post, id }));
 
     return tr;
   }

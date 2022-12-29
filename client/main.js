@@ -9,11 +9,20 @@ if (rootHtmlElement === null) throw new Error('Error: #root element  was not fou
 let postsFormComponent;
 let postsTableComponent;
 
-
+const onDeletePost = async ({ post, id }) => {
+  try {
+    await ApiService.deletePost({ post, id });
+  } catch (error) {
+    alert(error);
+  } finally {
+    const todos = await ApiService.getPosts();
+    postsTableComponent.renderPosts(todos);
+  }
+}
 
 ApiService.getPosts()
 .then((posts) => {
-  postsTableComponent = new PostsTableComponent({ posts });
+  postsTableComponent = new PostsTableComponent({ posts, onDeletePost });
   postsFormComponent = new PostsFormComponent();
   
     rootHtmlElement.append(

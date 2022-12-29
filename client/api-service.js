@@ -17,7 +17,23 @@ const ApiService = {
     } catch (error) {
       throw formatError(error);
     }
-  }
+  },
+
+  async deletePost({ post, id }) {
+    try {
+      const response = await fetch(`${SERVER_ADDRESS}/${POSTS_COLLECTION_NAME}/${id}`, {
+        method: 'DELETE',
+      });
+      if (response.status === 404) {
+        throw new Error(`Element "${post}" no longer exists.`)
+      }
+      const deletedItem = await response.json();
+
+      return deletedItem;
+    } catch (error) {
+      throw formatError(error);
+    }
+  },
 };
 
 export default ApiService;
