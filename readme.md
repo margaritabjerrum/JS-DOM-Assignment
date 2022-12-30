@@ -4,7 +4,7 @@
   * Node.js v16.* or above
 
 ## Dependency instalation
-  Open terminal in current(server/) folder and run command:
+  Open terminal in (server/) folder and run command:
   ```
   npm i
   ```
