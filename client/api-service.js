@@ -19,13 +19,13 @@ const ApiService = {
     }
   },
 
-  async deletePost({ post, id }) {
+  async deletePost({ name, post, id }) {
     try {
       const response = await fetch(`${SERVER_ADDRESS}/${POSTS_COLLECTION_NAME}/${id}`, {
         method: 'DELETE',
       });
       if (response.status === 404) {
-        throw new Error(`Element "${post}" no longer exists.`)
+        throw new Error(`Element "${name}: ${post}" no longer exists.`)
       }
       const deletedItem = await response.json();
 
