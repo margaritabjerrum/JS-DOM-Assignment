@@ -1,12 +1,24 @@
 {
   "posts": [
     {
-      "title": "Hello world!",
+      "name": "Fox",
+      "post": "Hello world!",
       "id": "vspVYj0"
     },
     {
-      "title": "This is my first post :)",
+      "name": "Wolf",
+      "post": "This is my first post! :)",
       "id": "HqF4Usq"
+    },
+    {
+      "name": "Orange",
+      "post": "I am here too ;)",
+      "id": "4F9-vfC"
+    },
+    {
+      "name": "Crab",
+      "post": "Good Morning people!",
+      "id": "ZjVEq-f"
     }
   ]
 }
