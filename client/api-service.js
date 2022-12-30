@@ -5,7 +5,12 @@ const formatError = (error) => {
   return error.message;
 }
 
-
+const requestSettings = {
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  },
+}
 
 const ApiService = {
   async getPosts() {
@@ -39,10 +44,7 @@ const ApiService = {
     try {
       const response = await fetch(`${SERVER_ADDRESS}/${POSTS_COLLECTION_NAME}`, {
         method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
+        ...requestSettings,
         body: JSON.stringify(postData),
       });
 
@@ -59,10 +61,7 @@ const ApiService = {
     try {
       const response = await fetch(`${SERVER_ADDRESS}/${POSTS_COLLECTION_NAME}/${id}`, {
         method: 'PATCH',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
+        ...requestSettings,
         body: JSON.stringify(props),
       });
 
