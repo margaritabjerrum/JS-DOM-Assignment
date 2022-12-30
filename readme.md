@@ -10,7 +10,7 @@
   ```
 
   ## Run initialization
-   Open terminal in current(server/) folder and run command:
+   Open terminal in (server/) folder and run command:
   ```
   npm run start
   ```
