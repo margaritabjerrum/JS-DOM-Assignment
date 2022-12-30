@@ -18,8 +18,8 @@ const onDeletePost = async ({ post, id }) => {
   } catch (error) {
     alert(error);
   } finally {
-    const todos = await ApiService.getPosts();
-    postsTableComponent.renderPosts(todos);
+    const posts = await ApiService.getPosts();
+    postsTableComponent.renderPosts(posts);
   }
 }
 

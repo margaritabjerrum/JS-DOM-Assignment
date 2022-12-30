@@ -3,7 +3,9 @@ class PostsTableComponent {
   tbodyHtmlElement;
 
   onDeletePost;
-  onUpdatePost
+  onUpdatePost;
+
+  cancelationHandlers;
 
   constructor({ posts, onDeletePost, onUpdatePost }) {
     this.htmlElement = document.createElement('table');
@@ -18,19 +20,23 @@ class PostsTableComponent {
       </thead>
       <tbody></tbody>`;
     this.onDeletePost = onDeletePost;
+    this.cancelationHandlers = [];
     this.onUpdatePost = onUpdatePost;
     this.tbodyHtmlElement = this.htmlElement.querySelector('tbody');
     this.renderPosts(posts);
   }
 
-  enableRowEditAction = ({ tr, editButton, cancelEditing, enableEditing, isBeingEdited }) => {
-    document.addEventListener('click', (event) => {
+  enableRowEditAction = ({ tr, editButton, cancelEditing, enableEditing, initialState}) => {
+    const cancelationHandler = (event) => {
       event.stopPropagation();
       if (!tr.contains(event.target)) cancelEditing();
-    });
+    }
+    this.cancelationHandlers.push(cancelationHandler);
+    document.addEventListener('click', cancelationHandler);
 
-    editButton.addEventListener('click', () => {
-      if (isBeingEdited) cancelEditing();
+    editButton.addEventListener('click', (event) => {
+      event.stopPropagation();
+      if (initialState.isBeingEdited) cancelEditing();
       else enableEditing();
     });
   }
@@ -55,13 +61,12 @@ class PostsTableComponent {
     });
   }
 
-  enableRowActions = ({tr, post, id }) => {
-    let isBeingEdited = false;
+  enableRowActions = ({ tr, post, id }) => {
     const editButton = tr.querySelector('.btn-warning');
     const postColumn = tr.querySelector('.js-post-col');
     const udpateButton = tr.querySelector('.btn-success');
     const delButton = tr.querySelector('.btn-danger');
-    const initialState = { post };
+    const initialState = { post, isBeingEdited: false };
 
 
     const cancelEditing = () => {
@@ -71,7 +76,7 @@ class PostsTableComponent {
       postColumn.setAttribute('contenteditable', 'false');
       udpateButton.classList.add('d-none');
       postColumn.textContent = initialState.post;
-      isBeingEdited = false;
+      initialState.isBeingEdited = false;
     };
 
     const enableEditing = () => {
@@ -80,14 +85,13 @@ class PostsTableComponent {
       editButton.classList.replace('btn-warning', 'btn-secondary');
       postColumn.setAttribute('contenteditable', 'true');
       udpateButton.classList.remove('d-none');
-      isBeingEdited = true;
+      initialState.isBeingEdited = true;
     };
 
     const actionProps = {
       id,
       tr,
       initialState,
-      isBeingEdited,
       postColumn,
       udpateButton,
       editButton,
@@ -112,13 +116,16 @@ class PostsTableComponent {
       <button class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></button>
     </td>`;
 
-    this.enableRowActions({tr, post, id });
+    this.enableRowActions({ tr, post, id });
 
     return tr;
   }
 
   renderPosts = (posts) => {
     this.tbodyHtmlElement.innerHTML = null;
+    this.cancelationHandlers.forEach(ch => document.removeEventListener('click', ch));
+    this.cancelationHandlers = [];
+
     const rowsHtmlElements = posts.map(this.createRowHtmlElement);
     this.tbodyHtmlElement.append(...rowsHtmlElements);
   }

@@ -16,7 +16,6 @@ class PostsFormComponent {
       const formData = new FormData(event.target);
       const post = formData.get('posts');
 
-      console.log(`i wrote new message: ${post}`);
       onSubmit({ post });
       event.target.reset();
     })
