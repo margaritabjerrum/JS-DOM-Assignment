@@ -3,7 +3,7 @@ import PostsFormComponent from './components/concrete/posts-form-component.js';
 import PostsTableComponent from './components/concrete/posts-table-component.js';
 import HeaderComponent from './components/concrete/header-component.js';
 import ContainerComponent from './components/wrappers/container-component.js';
-import FlexComponent from './components/wrappers/flex-component.js'
+import GridComponent from './components/wrappers/grid-component.js'
 
 const rootHtmlElement = document.querySelector('#root');
 
@@ -54,7 +54,7 @@ ApiService.getPosts()
       className: 'text-center my-4 fw-normal'
     });
 
-    const flexComponent = new FlexComponent({
+    const gridComponent = new GridComponent({
       children: [
         postsFormComponent.htmlElement,
         postsTableComponent.htmlElement,
@@ -64,7 +64,7 @@ ApiService.getPosts()
     const container = new ContainerComponent({
       children: [
         headerComponent.htmlElement,
-        flexComponent.htmlElement,
+        gridComponent.htmlElement,
       ]
     });
 

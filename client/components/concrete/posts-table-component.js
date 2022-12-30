@@ -9,14 +9,14 @@ class PostsTableComponent {
 
   constructor({ posts, onDeletePost, onUpdatePost }) {
     this.htmlElement = document.createElement('table');
-    this.htmlElement.className = 'table table-borderless';
+    this.htmlElement.className = 'post-table table table-borderless';
     this.htmlElement.innerHTML = `
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Name</th>
+          <th class="d-none">ID</th>
+          <th class="post-table__name-cell">Name</th>
           <th>Message</th>
-          <th>Actions</th>
+          <th class="post-table__last-cell">Actions</th>
         </tr>
       </thead>
       <tbody></tbody>`;
@@ -119,7 +119,7 @@ class PostsTableComponent {
   createRowHtmlElement = ({ name, post, id }) => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td>${id}</td>
+      <td class="d-none">${id}</td>
       <td class="js-name-col">${name}</td>
       <td class="js-post-col">${post}</td>
       <td class="d-flex justify-content-end gap-2">

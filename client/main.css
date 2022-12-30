@@ -1,0 +1,19 @@
+.d-grid{
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: 30px;
+}
+
+.post-table {}
+
+.post-table__last-cell {
+  width: 130px;
+}
+
+.post-table__name-cell {
+  width: 200px;
+}
+
+.post-form {
+  width: 100%;
+}

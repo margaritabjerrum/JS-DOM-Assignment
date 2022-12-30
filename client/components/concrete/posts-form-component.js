@@ -12,7 +12,7 @@ class PostsFormComponent {
         <label for="posts" class="form-label">Your Message:</label>
         <textarea class="form-control" id="posts" name="posts" rows="3"></textarea>
       </div>
-      <button type="submit" class="btn btn-primary">Post message</button>`
+      <button type="submit" class="post-form btn btn-primary">Post message</button>`
 
     this.htmlElement.addEventListener('submit', async (event) => {
       event.preventDefault();
