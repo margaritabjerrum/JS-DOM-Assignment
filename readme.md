@@ -1,4 +1,4 @@
-# CA type-13 first server
+# Install and start json server to run the app
 
 ## Needed programs
   * Node.js v16.* or above
